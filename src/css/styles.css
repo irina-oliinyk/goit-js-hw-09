@@ -27,3 +27,7 @@
 a{
   display: block;
 }
+
+:root {
+  --font-family: "Montserrat", sans-serif;
+}
