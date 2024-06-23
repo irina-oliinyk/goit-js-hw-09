@@ -4,15 +4,30 @@ let formData = {
 };
 
 const formEl = document.querySelector('.feedback-form');
+const inputEl = document.querySelector('input');
+const textareaEl = document.querySelector('textarea');
 
-formEl.addEventListener('input', handleSubmit);
-function handleSubmit(event) {
-    if (event.target.type === 'email' || event.target.tagName.toLowerCase() === 'textarea') {
-    formData[event.target.name] = event.target.value;
-    localStorage.setItem('feedback-form-state', JSON.stringify(formData));
-  }
+const updateFormData = () => {
+  formData.email = inputEl.value;
+  formData.message = textareaEl.value;
+  localStorage.setItem('feedback-form-state', JSON.stringify(formData));
 };
+
+
+// formEl.addEventListener('input', handleSubmit);
+// function handleSubmit(event) {
+//     if (event.target.type === 'email' || event.target.tagName.toLowerCase() === 'textarea') {
+//     formData[event.target.name] = event.target.value;
+//     localStorage.setItem('feedback-form-state', JSON.stringify(formData));
+//   }
+// };
  
+formEl.addEventListener('input', evt => {
+  const target = evt.target;
+  if (target === inputEl || target === textareaEl) {
+    updateFormData();
+  }
+});
 
 
 document.addEventListener('DOMContentLoaded', handleLocalStorage);
@@ -22,15 +37,14 @@ function handleLocalStorage() {
     let elementFormData = localStorage.getItem('feedback-form-state');
     if (elementFormData) {
         FormData = JSON.parse(elementFormData);
-        let emailElement = document.getElementById('email');
-        let messageElement = document.getElementById('message');
         
-        if (emailElement && messageElement) {
-            emailElement.value = FormData.email;
-            messageElement.value = FormData.message;
+        if (inputEl && textareaEl) {
+            inputEl.value = FormData.email;
+            textareaEl.value = FormData.message;
         }
     }
 }
+
 
 
 formEl.addEventListener('submit', handler);
